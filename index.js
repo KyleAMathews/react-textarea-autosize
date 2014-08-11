@@ -22,8 +22,8 @@ module.exports = React.createClass({
   getDiffSize: function() {
     var styles = window.getComputedStyle(this.getDOMNode());
     this.diff  = (
-      parseInt(styles.getPropertyValue('paddingBottom') || 0, 10) +
-      parseInt(styles.getPropertyValue('paddingTop') || 0, 10)
+      parseInt(styles.borderTopWidth.slice(0,-2) || 0, 10) +
+      parseInt(styles.borderBottomWidth.slice(0,-2) || 0, 10)
     );
   },
 
@@ -34,7 +34,7 @@ module.exports = React.createClass({
 
     var node = this.getDOMNode();
     node.style.height = 'auto';
-    node.style.height = (node.scrollHeight - this.diff) + 'px';
+    node.style.height = (node.scrollHeight + this.diff) + 'px';
   },
 
   onChange: function(e) {
@@ -48,6 +48,10 @@ module.exports = React.createClass({
   render: function() {
     return this.transferPropsTo(
       React.DOM.textarea({
+        style: {
+          overflow: "hidden",
+          padding: "10px" // For testing.
+        },
         onChange: this.onChange
       }, this.props.children)
     );
